@@ -15,21 +15,20 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function createWords(words) {
         const poetryBoard = document.getElementById('poetry-board');
+        const body = document.body;
         words.forEach(word => {
             const wordElement = document.createElement('div');
             wordElement.className = 'word';
             wordElement.textContent = word;
-            wordElement.style.top = `${Math.random() * 450}px`;
-            wordElement.style.left = `${Math.random() * 450}px`;
+            wordElement.style.top = `${Math.random() * (body.clientHeight - 50)}px`;
+            wordElement.style.left = `${Math.random() * (body.clientWidth - 100)}px`;
             wordElement.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
-            poetryBoard.appendChild(wordElement);
+            body.appendChild(wordElement);
             makeDraggable(wordElement);
         });
     }
 
     function makeDraggable(element) {
-        let currentDroppable = null;
-
         element.onmousedown = function(event) {
             let shiftX = event.clientX - element.getBoundingClientRect().left;
             let shiftY = event.clientY - element.getBoundingClientRect().top;
@@ -47,23 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function onMouseMove(event) {
                 moveAt(event.pageX, event.pageY);
-
-                element.hidden = true;
-                let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
-                element.hidden = false;
-
-                if (!elemBelow) return;
-
-                let droppableBelow = elemBelow.closest('.droppable');
-                if (currentDroppable != droppableBelow) {
-                    if (currentDroppable) {
-                        leaveDroppable(currentDroppable);
-                    }
-                    currentDroppable = droppableBelow;
-                    if (currentDroppable) {
-                        enterDroppable(currentDroppable);
-                    }
-                }
             }
 
             document.addEventListener('mousemove', onMouseMove);
@@ -78,18 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
         element.ondragstart = function() {
             return false;
         };
-
-        function enterDroppable(elem) {
-            elem.style.background = 'pink';
-        }
-
-        function leaveDroppable(elem) {
-            elem.style.background = '';
-        }
     }
 
     document.getElementById('download-btn').addEventListener('click', () => {
-        html2canvas(document.getElementById('poetry-board')).then(canvas => {
+        const poetryBoard = document.getElementById('poetry-board');
+        html2canvas(poetryBoard).then(canvas => {
             const link = document.createElement('a');
             link.download = 'poem.png';
             link.href = canvas.toDataURL();
