@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             const words = [];
-            const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names', 'ekstranynorsk', 'enkeltbokstavar', 'artikkel'];
+            const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names', 'ekstranynorsk', 'enkeltbokstavar', 'artikkel', 'prepositions'];
             const wordsPerCategory = Math.floor(40 / categories.length);
             const extraWords = 40 % categories.length;
 

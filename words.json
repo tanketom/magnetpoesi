@@ -9,5 +9,6 @@
     "expletive": ["oi", "faen", "jammen", "pokker", "ånei"],
     "ekstranynorsk": ["framifrå", "kjærleik", "løyndom", "røyndom", "semje", "stundom", "til dømes", "mellombels"],
     "enkeltbokstavar": ["r", "r", "ar", "ar", "t", "t", "t", "n", "n"],
-    "artikkel": ["ein", "eit", "ei"]
+    "artikkel": ["ein", "eit", "ei"],
+    "prepositions": ["på", "i", "under", "over", "ved", "til", "frå", "med", "utan", "om", "for", "mot", "etter", "før", "gjennom", "mellom", "rundt", "langs", "hos"]
 }
