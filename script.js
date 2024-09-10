@@ -1,33 +1,28 @@
 document.addEventListener('DOMContentLoaded', () => {
-    let wordsData = {};
-
     fetch('words.json')
         .then(response => response.json())
         .then(data => {
-            wordsData = data;
-        });
+            const words = [];
+            const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names', 'ekstranynorsk', 'enkeltbokstavar', 'artikkel'];
+            const wordsPerCategory = Math.floor(45 / categories.length);
+            const extraWords = 45 % categories.length;
 
-    document.getElementById('random-btn').addEventListener('click', () => {
-        const words = generateHaiku(wordsData);
-        createWords(words);
-    });
+            categories.forEach(category => {
+                for (let i = 0; i < wordsPerCategory; i++) {
+                    const randomIndex = Math.floor(Math.random() * data[category].length);
+                    words.push(data[category][randomIndex]);
+                }
+            });
 
-    function generateHaiku(data) {
-        const haiku = [];
-        const categories = ['nouns', 'verbs', 'adjectives', 'adverbials', 'proper_names', 'conjunctions', 'pronouns', 'artikkel'];
-        
-        for (let i = 0; i < 3; i++) {
-            const line = [];
-            for (let j = 0; j < 5; j++) {
+            // Add extra words to make up 40
+            for (let i = 0; i < extraWords; i++) {
                 const randomCategory = categories[Math.floor(Math.random() * categories.length)];
                 const randomIndex = Math.floor(Math.random() * data[randomCategory].length);
-                line.push(data[randomCategory][randomIndex]);
+                words.push(data[randomCategory][randomIndex]);
             }
-            haiku.push(line.join(' '));
-        }
-        
-        return haiku;
-    }
+
+            createWords(words);
+        });
 
     function createWords(words) {
         const poetryBoard = document.getElementById('poetry-board');
@@ -121,12 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.restore();
         });
 
-        const randomWords = Array.from(words).sort(() => 0.5 - Math.random()).slice(0, 3).map(word => word.textContent);
-        const randomLetters = Array.from({ length: 3 }, () => String.fromCharCode(65 + Math.floor(Math.random() * 26))).join('');
-        const filename = `${randomWords.join('-')}-${randomLetters}-poem.png`;
-
         const link = document.createElement('a');
-        link.download = filename;
+        link.download = 'poem.png';
         link.href = canvas.toDataURL();
         link.click();
     });
