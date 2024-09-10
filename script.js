@@ -74,11 +74,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     document.getElementById('download-btn').addEventListener('click', () => {
         const poetryBoard = document.getElementById('poetry-board');
-        html2canvas(poetryBoard).then(canvas => {
-            const link = document.createElement('a');
-            link.download = 'poem.png';
-            link.href = canvas.toDataURL();
-            link.click();
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        const rect = poetryBoard.getBoundingClientRect();
+
+        canvas.width = rect.width;
+        canvas.height = rect.height;
+
+        ctx.fillStyle = 'black';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        const words = document.querySelectorAll('.word');
+        words.forEach(word => {
+            const wordRect = word.getBoundingClientRect();
+            const x = wordRect.left - rect.left;
+            const y = wordRect.top - rect.top;
+
+            ctx.save();
+            ctx.translate(x + wordRect.width / 2, y + wordRect.height / 2);
+            const rotation = parseFloat(word.style.transform.replace('rotate(', '').replace('deg)', ''));
+            ctx.rotate(rotation * Math.PI / 180);
+            ctx.translate(-wordRect.width / 2, -wordRect.height / 2);
+
+            ctx.fillStyle = 'white';
+            ctx.fillRect(0, 0, wordRect.width, wordRect.height);
+
+            ctx.fillStyle = 'black';
+            ctx.font = '16px Arial';
+            ctx.fillText(word.textContent, 5, 20);
+            ctx.restore();
         });
+
+        const link = document.createElement('a');
+        link.download = 'poem.png';
+        link.href = canvas.toDataURL();
+        link.click();
     });
 });

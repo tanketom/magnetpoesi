@@ -4,46 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Magnetic Poetry</title>
-    <style>
-        body {
-            background-color: white;
-            font-family: Arial, sans-serif;
-            position: relative;
-        }
-        #poetry-board {
-            width: 500px;
-            height: 500px;
-            background-color: black;
-            margin: 20px auto;
-            position: relative;
-        }
-        .word {
-            background-color: white;
-            color: black;
-            padding: 5px;
-            margin: 5px;
-            display: inline-block;
-            cursor: pointer;
-            position: absolute;
-            border: 1px solid gray;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-            transform-origin: center;
-        }
-        #download-btn {
-            display: block;
-            margin: 20px auto;
-            padding: 10px 20px;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            cursor: pointer;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div id="poetry-board"></div>
     <button id="download-btn">Download Poem</button>
+    <canvas id="canvas" style="display:none;"></canvas>
     <script src="script.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
 </body>
 </html>
