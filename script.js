@@ -28,9 +28,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function makeDraggable(element) {
+        let currentDroppable = null;
+
         element.onmousedown = function(event) {
             let shiftX = event.clientX - element.getBoundingClientRect().left;
             let shiftY = event.clientY - element.getBoundingClientRect().top;
+
+            element.style.position = 'absolute';
+            element.style.zIndex = 1000;
+            document.body.append(element);
+
+            moveAt(event.pageX, event.pageY);
 
             function moveAt(pageX, pageY) {
                 element.style.left = pageX - shiftX + 'px';
@@ -39,6 +47,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
             function onMouseMove(event) {
                 moveAt(event.pageX, event.pageY);
+
+                element.hidden = true;
+                let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
+                element.hidden = false;
+
+                if (!elemBelow) return;
+
+                let droppableBelow = elemBelow.closest('.droppable');
+                if (currentDroppable != droppableBelow) {
+                    if (currentDroppable) {
+                        leaveDroppable(currentDroppable);
+                    }
+                    currentDroppable = droppableBelow;
+                    if (currentDroppable) {
+                        enterDroppable(currentDroppable);
+                    }
+                }
             }
 
             document.addEventListener('mousemove', onMouseMove);
@@ -53,6 +78,14 @@ document.addEventListener('DOMContentLoaded', () => {
         element.ondragstart = function() {
             return false;
         };
+
+        function enterDroppable(elem) {
+            elem.style.background = 'pink';
+        }
+
+        function leaveDroppable(elem) {
+            elem.style.background = '';
+        }
     }
 
     document.getElementById('download-btn').addEventListener('click', () => {
