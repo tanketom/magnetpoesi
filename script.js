@@ -21,6 +21,7 @@ document.addEventListener('DOMContentLoaded', () => {
             wordElement.textContent = word;
             wordElement.style.top = `${Math.random() * 450}px`;
             wordElement.style.left = `${Math.random() * 450}px`;
+            wordElement.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
             poetryBoard.appendChild(wordElement);
             makeDraggable(wordElement);
         });
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
             element.onmouseup = function() {
                 document.removeEventListener('mousemove', onMouseMove);
                 element.onmouseup = null;
+                element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
             };
         };
 
