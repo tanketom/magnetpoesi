@@ -34,22 +34,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function createWords(words) {
         const poetryBoard = document.getElementById('poetry-board');
+        const boardRect = poetryBoard.getBoundingClientRect();
+        const edgePadding = 10; // Padding from the edge
+
         words.forEach(word => {
             const wordElement = document.createElement('div');
             wordElement.className = 'word';
             wordElement.textContent = word;
-            setPositionAndRotation(wordElement);
+
+            // Position words around the edges
+            const position = Math.random();
+            if (position < 0.25) {
+                // Top edge
+                wordElement.style.top = `${edgePadding}px`;
+                wordElement.style.left = `${Math.random() * (boardRect.width - 100)}px`;
+            } else if (position < 0.5) {
+                // Bottom edge
+                wordElement.style.top = `${boardRect.height - edgePadding - 30}px`;
+                wordElement.style.left = `${Math.random() * (boardRect.width - 100)}px`;
+            } else if (position < 0.75) {
+                // Left edge
+                wordElement.style.top = `${Math.random() * (boardRect.height - 50)}px`;
+                wordElement.style.left = `${edgePadding}px`;
+            } else {
+                // Right edge
+                wordElement.style.top = `${Math.random() * (boardRect.height - 50)}px`;
+                wordElement.style.left = `${boardRect.width - edgePadding - 50}px`;
+            }
+
+            wordElement.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
             poetryBoard.appendChild(wordElement);
             makeDraggable(wordElement);
         });
-    }
-
-    function setPositionAndRotation(element) {
-        const poetryBoard = document.getElementById('poetry-board');
-        const boardRect = poetryBoard.getBoundingClientRect();
-        element.style.top = `${Math.random() * (boardRect.height - 50)}px`;
-        element.style.left = `${Math.random() * (boardRect.width - 100)}px`;
-        element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
     }
 
     function makeDraggable(element) {
@@ -81,13 +97,13 @@ document.addEventListener('DOMContentLoaded', () => {
             element.onmouseup = function() {
                 document.removeEventListener('mousemove', onMouseMove);
                 element.onmouseup = null;
-                setPositionAndRotation(element);
+                element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
             };
 
             document.addEventListener('mouseup', function() {
                 document.removeEventListener('mousemove', onMouseMove);
                 element.onmouseup = null;
-                setPositionAndRotation(element);
+                element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
             });
 
             element.ondragstart = function() {
