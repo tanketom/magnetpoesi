@@ -1,0 +1,7 @@
+{
+    "verbs": ["gå", "springe", "lese", "skrive", "snakke"],
+    "adjectives": ["vakker", "stor", "liten", "rask", "sein"],
+    "nouns": ["hund", "katt", "hus", "bil", "tre"],
+    "pronouns": ["eg", "du", "han", "ho", "vi"],
+    "conjunctions": ["og", "eller", "men", "fordi", "så"]
+  }  

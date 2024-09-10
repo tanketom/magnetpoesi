@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magnetic Poetry</title>
+    <style>
+        body {
+            background-color: white;
+            font-family: Arial, sans-serif;
+        }
+        #poetry-board {
+            width: 500px;
+            height: 500px;
+            background-color: black;
+            margin: 20px auto;
+            position: relative;
+        }
+        .word {
+            background-color: white;
+            color: black;
+            padding: 5px;
+            margin: 5px;
+            display: inline-block;
+            cursor: move;
+            position: absolute;
+        }
+        #download-btn {
+            display: block;
+            margin: 20px auto;
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div id="poetry-board"></div>
+    <button id="download-btn">Download Poem</button>
+    <script src="script.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+</body>
+</html>
