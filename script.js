@@ -71,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const centerX = element.offsetWidth / 2;
             const centerY = element.offsetHeight / 2;
             element.style.left = `${event.pageX - centerX}px`;
-            element.style.top = `${event.pageY - centerY}px`;
+            element.style.top = `${event.pageY - centerY - 20}px`; // Move 20 pixels further up
             document.removeEventListener('mousemove', onMouseMove);
             element.onmouseup = null;
             element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
