@@ -3,13 +3,24 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             const words = [];
-            const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions'];
+            const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names'];
+            const wordsPerCategory = Math.floor(40 / categories.length);
+            const extraWords = 40 % categories.length;
+
             categories.forEach(category => {
-                for (let i = 0; i < 6; i++) {
+                for (let i = 0; i < wordsPerCategory; i++) {
                     const randomIndex = Math.floor(Math.random() * data[category].length);
                     words.push(data[category][randomIndex]);
                 }
             });
+
+            // Add extra words to make up 40
+            for (let i = 0; i < extraWords; i++) {
+                const randomCategory = categories[Math.floor(Math.random() * categories.length)];
+                const randomIndex = Math.floor(Math.random() * data[randomCategory].length);
+                words.push(data[randomCategory][randomIndex]);
+            }
+
             createWords(words);
         });
 
