@@ -29,11 +29,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function makeDraggable(element) {
-        let shiftX, shiftY;
+        element.addEventListener('mousedown', onMouseDown);
 
-        element.onmousedown = function(event) {
-            shiftX = event.clientX - element.getBoundingClientRect().left;
-            shiftY = event.clientY - element.getBoundingClientRect().top;
+        function onMouseDown(event) {
+            event.preventDefault();
+
+            const shiftX = event.clientX - element.getBoundingClientRect().left;
+            const shiftY = event.clientY - element.getBoundingClientRect().top;
 
             element.style.position = 'absolute';
             element.style.zIndex = 1000;
@@ -58,28 +60,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
             };
 
-            document.onkeydown = function(event) {
-                if (event.key === 'Escape') {
-                    document.removeEventListener('mousemove', onMouseMove);
-                    element.onmouseup = null;
-                    element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
-                }
+            element.ondragstart = function() {
+                return false;
             };
-        };
-
-        element.onclick = function(event) {
-            const centerX = element.offsetWidth / 2;
-            const centerY = element.offsetHeight / 2;
-            element.style.left = `${event.pageX - centerX}px`;
-            element.style.top = `${event.pageY - centerY - 20}px`; // Move 20 pixels further up
-            document.removeEventListener('mousemove', onMouseMove);
-            element.onmouseup = null;
-            element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
-        };
-
-        element.ondragstart = function() {
-            return false;
-        };
+        }
     }
 
     document.getElementById('download-btn').addEventListener('click', () => {
