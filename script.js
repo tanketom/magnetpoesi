@@ -29,9 +29,11 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function makeDraggable(element) {
+        let shiftX, shiftY;
+
         element.onmousedown = function(event) {
-            let shiftX = event.clientX - element.getBoundingClientRect().left;
-            let shiftY = event.clientY - element.getBoundingClientRect().top;
+            shiftX = event.clientX - element.getBoundingClientRect().left;
+            shiftY = event.clientY - element.getBoundingClientRect().top;
 
             element.style.position = 'absolute';
             element.style.zIndex = 1000;
@@ -54,6 +56,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 document.removeEventListener('mousemove', onMouseMove);
                 element.onmouseup = null;
                 element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+            };
+
+            document.onkeydown = function(event) {
+                if (event.key === 'Escape') {
+                    document.removeEventListener('mousemove', onMouseMove);
+                    element.onmouseup = null;
+                    element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+                }
             };
         };
 
