@@ -44,16 +44,44 @@ function moveHaikuToBoard(haiku) {
     const boardRect = poetryBoard.getBoundingClientRect();
     const edgePadding = 10; // Padding from the edge
 
+    // Move haiku lines to the center
     haiku.forEach((line, index) => {
         const words = line.split(' ');
         words.forEach((word, wordIndex) => {
             const wordElement = Array.from(document.querySelectorAll('.word')).find(el => el.textContent === word);
             if (wordElement) {
-                wordElement.style.top = `${edgePadding + index * 30}px`;
-                wordElement.style.left = `${edgePadding + wordIndex * 60}px`;
+                wordElement.style.top = `${boardRect.height / 2 - 50 + index * 30}px`;
+                wordElement.style.left = `${boardRect.width / 2 - 100 + wordIndex * 60}px`;
                 wordElement.style.transform = `rotate(0deg)`;
                 poetryBoard.appendChild(wordElement);
             }
         });
+    });
+
+    // Move unused words to the edges
+    const usedWords = haiku.flatMap(line => line.split(' '));
+    const unusedWords = Array.from(document.querySelectorAll('.word')).filter(el => !usedWords.includes(el.textContent));
+
+    unusedWords.forEach(wordElement => {
+        const position = Math.random();
+        if (position < 0.25) {
+            // Top edge
+            wordElement.style.top = `${edgePadding}px`;
+            wordElement.style.left = `${Math.random() * (boardRect.width - 100)}px`;
+        } else if (position < 0.5) {
+            // Bottom edge
+            wordElement.style.top = `${boardRect.height - edgePadding - 30}px`;
+            wordElement.style.left = `${Math.random() * (boardRect.width - 100)}px`;
+        } else if (position < 0.75) {
+            // Left edge
+            wordElement.style.top = `${Math.random() * (boardRect.height - 50)}px`;
+            wordElement.style.left = `${edgePadding}px`;
+        } else {
+            // Right edge
+            wordElement.style.top = `${Math.random() * (boardRect.height - 50)}px`;
+            wordElement.style.left = `${boardRect.width - edgePadding - 50}px`;
+        }
+        wordElement.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+        poetryBoard.appendChild(wordElement);
     });
 }
