@@ -1,11 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
     fetch('words.json')
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            return response.json();
+        })
         .then(data => {
             const words = [];
             const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names', 'ekstranynorsk', 'enkeltbokstavar', 'artikkel'];
-            const wordsPerCategory = Math.floor(45 / categories.length);
-            const extraWords = 45 % categories.length;
+            const wordsPerCategory = Math.floor(40 / categories.length);
+            const extraWords = 40 % categories.length;
 
             categories.forEach(category => {
                 for (let i = 0; i < wordsPerCategory; i++) {
@@ -22,21 +27,29 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             createWords(words);
+        })
+        .catch(error => {
+            console.error('There was a problem with the fetch operation:', error);
         });
 
     function createWords(words) {
         const poetryBoard = document.getElementById('poetry-board');
-        const body = document.body;
         words.forEach(word => {
             const wordElement = document.createElement('div');
             wordElement.className = 'word';
             wordElement.textContent = word;
-            wordElement.style.top = `${Math.random() * (body.clientHeight - 50)}px`;
-            wordElement.style.left = `${Math.random() * (body.clientWidth - 100)}px`;
-            wordElement.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
-            body.appendChild(wordElement);
+            setPositionAndRotation(wordElement);
+            poetryBoard.appendChild(wordElement);
             makeDraggable(wordElement);
         });
+    }
+
+    function setPositionAndRotation(element) {
+        const poetryBoard = document.getElementById('poetry-board');
+        const boardRect = poetryBoard.getBoundingClientRect();
+        element.style.top = `${Math.random() * (boardRect.height - 50)}px`;
+        element.style.left = `${Math.random() * (boardRect.width - 100)}px`;
+        element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
     }
 
     function makeDraggable(element) {
@@ -68,13 +81,13 @@ document.addEventListener('DOMContentLoaded', () => {
             element.onmouseup = function() {
                 document.removeEventListener('mousemove', onMouseMove);
                 element.onmouseup = null;
-                element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+                setPositionAndRotation(element);
             };
 
             document.addEventListener('mouseup', function() {
                 document.removeEventListener('mousemove', onMouseMove);
                 element.onmouseup = null;
-                element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+                setPositionAndRotation(element);
             });
 
             element.ondragstart = function() {
