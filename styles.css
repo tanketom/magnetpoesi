@@ -24,7 +24,7 @@ body {
     transform-origin: center;
 }
 
-#download-btn {
+#download-btn, #haiku-btn {
     display: block;
     margin: 20px auto;
     padding: 10px 20px;

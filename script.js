@@ -150,45 +150,4 @@ document.addEventListener('DOMContentLoaded', () => {
         link.href = canvas.toDataURL();
         link.click();
     });
-
-    document.getElementById('haiku-btn').addEventListener('click', () => {
-        const words = Array.from(document.querySelectorAll('.word')).map(word => word.textContent);
-        const haiku = generateHaiku(words);
-        alert(`Your Haiku:\n${haiku.join('\n')}`);
-    });
-
-    function generateHaiku(words) {
-        const syllableCounts = [5, 7, 5];
-        const haiku = [];
-        let currentLine = [];
-        let currentSyllables = 0;
-
-        words.forEach(word => {
-            const syllables = countSyllables(word);
-            if (currentSyllables + syllables <= syllableCounts[haiku.length]) {
-                currentLine.push(word);
-                currentSyllables += syllables;
-            } else {
-                haiku.push(currentLine.join(' '));
-                currentLine = [word];
-                currentSyllables = syllables;
-                if (haiku.length === 3) return;
-            }
-        });
-
-        if (currentLine.length > 0 && haiku.length < 3) {
-            haiku.push(currentLine.join(' '));
-        }
-
-        return haiku;
-    }
-
-    function countSyllables(word) {
-        word = word.toLowerCase();
-        if (word.length <= 3) return 1;
-        word = word.replace(/(?:[^laeiouy]es|ed|[^laeiouy]e)$/, '');
-        word = word.replace(/^y/, '');
-        const syllableMatch = word.match(/[aeiouy]{1,2}/g);
-        return syllableMatch ? syllableMatch.length : 1;
-    }
 });
