@@ -1,9 +1,13 @@
 {
-    "verbs": ["går", "spring", "les", "skriver", "snakkar", "hoppar", "syklar", "et", "drikker", "søv", "ser"],
+    "verbs": ["går", "spring", "les", "skriver", "snakkar", "hoppar", "syklar", "et", "drikker", "søv", "ser", "råkar"],
     "adjectives": ["vakker", "stor", "liten", "rask", "sein", "sterk", "svak", "høg", "låg", "mørk"],
     "nouns": ["hunden", "katten", "huset", "sykkelen", "trea", "blomen", "fjella", "elvi", "boka", "skulen"],
     "pronouns": ["eg", "eg", "du", "du", "han", "ho", "vi", "dei", "de", "me", "dykk", "oss"],
     "conjunctions": ["og", "og", "eller", "men", "fordi", "så", "sjølv om", "dersom", "når", "mens", "før"],
     "adverbials": ["ofte", "aldri", "snart", "alltid", "kanskje", "sakte", "fort", "her", "der", "nå", "ikkje", "ikkje"],
-    "proper_names": ["Ola", "Kari", "Nils", "Ingrid", "Per", "Anna", "Lars", "Mona", "Erik", "Sofie"]
+    "proper_names": ["Ola", "Kari", "Nils", "Ingrid", "Per", "Anna", "Lars", "Mona", "Erik", "Sofie"],
+    "expletive": ["oi", "faen", "jammen", "pokker", "ånei"],
+    "ekstranynorsk": ["framifrå", "kjærleik", "løyndom", "røyndom", "semje", "stundom", "til dømes", "mellombels"],
+    "enkeltbokstavar": ["r", "r", "ar", "ar", "t", "t"],
+    "artikkel": ["ein", "eit", "ei"]
 }

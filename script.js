@@ -3,9 +3,9 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(response => response.json())
         .then(data => {
             const words = [];
-            const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names'];
-            const wordsPerCategory = Math.floor(40 / categories.length);
-            const extraWords = 40 % categories.length;
+            const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names', 'ekstranynorsk', 'enkeltbokstavar', 'artikkel'];
+            const wordsPerCategory = Math.floor(45 / categories.length);
+            const extraWords = 45 % categories.length;
 
             categories.forEach(category => {
                 for (let i = 0; i < wordsPerCategory; i++) {
