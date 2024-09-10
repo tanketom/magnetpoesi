@@ -60,6 +60,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
             };
 
+            document.addEventListener('mouseup', function() {
+                document.removeEventListener('mousemove', onMouseMove);
+                element.onmouseup = null;
+                element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+            });
+
             element.ondragstart = function() {
                 return false;
             };
