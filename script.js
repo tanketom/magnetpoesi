@@ -1,5 +1,3 @@
-This is script.js:
-
 document.addEventListener('DOMContentLoaded', () => {
     fetch('words.json')
         .then(response => {
