@@ -1,3 +1,5 @@
+This is script.js:
+
 document.addEventListener('DOMContentLoaded', () => {
     fetch('words.json')
         .then(response => {
@@ -13,13 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const extraWords = 45 % categories.length;
 
             categories.forEach(category => {
-                let count = wordsPerCategory;
-                if (category === 'nouns') {
-                    count += 5; // Increase nouns by 5
-                } else if (category === 'proper_names') {
-                    count -= 5; // Decrease proper names by 5
-                }
-                for (let i = 0; i < count; i++) {
+                for (let i = 0; i < wordsPerCategory; i++) {
                     const randomIndex = Math.floor(Math.random() * data[category].length);
                     words.push(data[category][randomIndex]);
                 }
