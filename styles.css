@@ -19,8 +19,8 @@ body {
 #poetry-board {
     position: relative;
     margin: 0 auto;
-    width: 400px; /* Adjust as needed */
-    height: 400px; /* Adjust as needed */
+    width: 500px; /* Adjust as needed */
+    height: 500px; /* Adjust as needed */
     border: 1px solid #ccc;
     background-color: #303030;
 }
