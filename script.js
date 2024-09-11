@@ -37,7 +37,7 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
-        
+
     function createWords(words) {
         const poetryBoard = document.getElementById('poetry-board');
         const boardRect = poetryBoard.getBoundingClientRect();
