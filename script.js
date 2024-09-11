@@ -1,39 +1,49 @@
 document.addEventListener('DOMContentLoaded', () => {
-    fetch('words.json')
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
-            return response.json();
-        })
-        .then(data => {
-            const words = [];
-            const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names', 'expletive', 'ekstranynorsk', 'enkeltbokstavar', 'artikkel', 'prepositions'];
-            const wordsPerCategory = Math.floor(45 / categories.length);
-            const extraWords = 45 % categories.length;
-
-            categories.forEach(category => {
-                for (let i = 0; i < wordsPerCategory; i++) {
-                    const randomIndex = Math.floor(Math.random() * data[category].length);
-                    words.push(data[category][randomIndex]);
+    function fetchAndDisplayWords() {
+        fetch('words.json')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
                 }
+                return response.json();
+            })
+            .then(data => {
+                const words = [];
+                const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names', 'expletive', 'ekstranynorsk', 'enkeltbokstavar', 'artikkel', 'prepositions'];
+                
+                // Define the number of words you want from each category
+                const wordsCount = {
+                    verbs: 4,
+                    adjectives: 3,
+                    nouns: 10,
+                    pronouns: 3,
+                    conjunctions: 3,
+                    adverbials: 3,
+                    proper_names: 2, 
+                    expletive: 3,
+                    ekstranynorsk: 3,
+                    enkeltbokstavar: 5,
+                    artikkel: 3,
+                    prepositions: 3
+                };
+
+                categories.forEach(category => {
+                    for (let i = 0; i < wordsCount[category]; i++) {
+                        const randomIndex = Math.floor(Math.random() * data[category].length);
+                        words.push(data[category][randomIndex]);
+                    }
+                });
+
+                createWords(words);
+            })
+            .catch(error => {
+                console.error('There was a problem with the fetch operation:', error);
             });
-
-            // Add extra words to make up 45
-            for (let i = 0; i < extraWords; i++) {
-                const randomCategory = categories[Math.floor(Math.random() * categories.length)];
-                const randomIndex = Math.floor(Math.random() * data[randomCategory].length);
-                words.push(data[randomCategory][randomIndex]);
-            }
-
-            createWords(words);
-        })
-        .catch(error => {
-            console.error('There was a problem with the fetch operation:', error);
-        });
+    }
 
     function createWords(words) {
         const poetryBoard = document.getElementById('poetry-board');
+        poetryBoard.innerHTML = ''; // Clear existing words
         const boardRect = poetryBoard.getBoundingClientRect();
         const edgePadding = 10; // Padding from the edge
 
@@ -150,4 +160,9 @@ document.addEventListener('DOMContentLoaded', () => {
         link.href = canvas.toDataURL();
         link.click();
     });
+
+    document.getElementById('new-words-btn').addEventListener('click', fetchAndDisplayWords);
+
+    // Initial load of words
+    fetchAndDisplayWords();
 });

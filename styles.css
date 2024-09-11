@@ -24,12 +24,20 @@ body {
     transform-origin: center;
 }
 
-#download-btn, #haiku-btn {
-    display: block;
-    margin: 20px auto;
+#download-btn, #new-words-btn {
+    display: inline-block;
+    margin: 5px;
     padding: 10px 20px;
-    background-color: #4CAF50;
+    font-size: 16px;
+    cursor: pointer;
+    background-color: #4CAF50; /* Green */
     color: white;
     border: none;
-    cursor: pointer;
+    border-radius: 5px;
+    text-align: center;
+    text-decoration: none;
+}
+
+#download-btn:hover, #new-words-btn:hover {
+    background-color: #45a049;
 }
