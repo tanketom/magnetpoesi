@@ -8,12 +8,18 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .then(data => {
             const words = [];
-            const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names', 'ekstranynorsk', 'enkeltbokstavar', 'artikkel', 'prepositions'];
+            const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names', 'expletives', 'ekstranynorsk', 'enkeltbokstavar', 'artikkel', 'prepositions'];
             const wordsPerCategory = Math.floor(45 / categories.length);
             const extraWords = 45 % categories.length;
 
             categories.forEach(category => {
-                for (let i = 0; i < wordsPerCategory; i++) {
+                let count = wordsPerCategory;
+                if (category === 'nouns') {
+                    count += 5; // Increase nouns by 5
+                } else if (category === 'proper_names') {
+                    count -= 5; // Decrease proper names by 5
+                }
+                for (let i = 0; i < count; i++) {
                     const randomIndex = Math.floor(Math.random() * data[category].length);
                     words.push(data[category][randomIndex]);
                 }
@@ -31,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
         .catch(error => {
             console.error('There was a problem with the fetch operation:', error);
         });
-
     function createWords(words) {
         const poetryBoard = document.getElementById('poetry-board');
         const boardRect = poetryBoard.getBoundingClientRect();
