@@ -9,8 +9,8 @@ document.addEventListener('DOMContentLoaded', () => {
         .then(data => {
             const words = [];
             const categories = ['verbs', 'adjectives', 'nouns', 'pronouns', 'conjunctions', 'adverbials', 'proper_names', 'ekstranynorsk', 'enkeltbokstavar', 'artikkel', 'prepositions'];
-            const wordsPerCategory = Math.floor(40 / categories.length);
-            const extraWords = 40 % categories.length;
+            const wordsPerCategory = Math.floor(45 / categories.length);
+            const extraWords = 45 % categories.length;
 
             categories.forEach(category => {
                 for (let i = 0; i < wordsPerCategory; i++) {
@@ -19,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // Add extra words to make up 40
+            // Add extra words to make up 45
             for (let i = 0; i < extraWords; i++) {
                 const randomCategory = categories[Math.floor(Math.random() * categories.length)];
                 const randomIndex = Math.floor(Math.random() * data[randomCategory].length);
