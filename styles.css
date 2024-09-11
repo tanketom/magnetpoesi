@@ -3,14 +3,6 @@ body {
     font-family: Arial, sans-serif;
 }
 
-#poetry-board {
-    width: 500px;
-    height: 500px;
-    background-color: black;
-    margin: 20px auto;
-    position: relative;
-}
-
 .word {
     background-color: white;
     color: black;
@@ -22,6 +14,20 @@ body {
     border: 1px solid gray;
     box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
     transform-origin: center;
+}
+
+#poetry-board {
+    position: relative;
+    margin: 0 auto;
+    width: 80%; /* Adjust as needed */
+    height: 400px; /* Adjust as needed */
+    border: 1px solid #ccc;
+    background-color: #f9f9f9;
+}
+
+#button-container {
+    text-align: center;
+    margin-top: 10px;
 }
 
 #download-btn, #new-words-btn {
