@@ -82,6 +82,8 @@ document.addEventListener('DOMContentLoaded', () => {
         element.addEventListener('mousedown', onMouseDown);
         element.addEventListener('touchstart', onTouchStart);
     
+        let activeTouchId = null;
+    
         function onMouseDown(event) {
             event.preventDefault();
             startDrag(event.clientX, event.clientY);
@@ -89,8 +91,11 @@ document.addEventListener('DOMContentLoaded', () => {
     
         function onTouchStart(event) {
             event.preventDefault();
-            const touch = event.touches[0];
-            startDrag(touch.clientX, touch.clientY);
+            if (activeTouchId === null) {
+                const touch = event.touches[0];
+                activeTouchId = touch.identifier;
+                startDrag(touch.clientX, touch.clientY);
+            }
         }
     
         function startDrag(clientX, clientY) {
@@ -113,8 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
     
             function onTouchMove(event) {
-                const touch = event.touches[0];
-                moveAt(touch.pageX, touch.pageY);
+                const touch = Array.from(event.changedTouches).find(t => t.identifier === activeTouchId);
+                if (touch) {
+                    moveAt(touch.pageX, touch.pageY);
+                }
             }
     
             document.addEventListener('mousemove', onMouseMove);
@@ -126,17 +133,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
             };
     
-            element.ontouchend = function() {
-                document.removeEventListener('touchmove', onTouchMove);
-                element.ontouchend = null;
-                element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+            element.ontouchend = function(event) {
+                const touch = Array.from(event.changedTouches).find(t => t.identifier === activeTouchId);
+                if (touch) {
+                    document.removeEventListener('touchmove', onTouchMove);
+                    element.ontouchend = null;
+                    element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+                    activeTouchId = null;
+                }
             };
     
             element.ondragstart = function() {
                 return false;
             };
         }
-    }    
+    }       
 
     document.getElementById('download-btn').addEventListener('click', () => {
         const poetryBoard = document.getElementById('poetry-board');
