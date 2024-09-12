@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     
         function onTouchStart(event) {
-            event.preventDefault();
             if (activeTouchId === null) {
                 const touch = event.touches[0];
                 activeTouchId = touch.identifier;
@@ -147,7 +146,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 return false;
             };
         }
-    }       
+    
+        document.addEventListener('touchstart', function(event) {
+            if (event.target.classList.contains('word')) {
+                return;
+            }
+            activeTouchId = null;
+        });
+    }          
 
     document.getElementById('download-btn').addEventListener('click', () => {
         const poetryBoard = document.getElementById('poetry-board');
