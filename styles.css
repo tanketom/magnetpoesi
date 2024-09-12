@@ -27,8 +27,10 @@ footer {
 #poetry-board {
     position: relative;
     margin: 0 auto;
-    width: 500px; /* Adjust as needed */
-    height: 500px; /* Adjust as needed */
+    width: 90%; /* Adjust as needed */
+    max-width: 500px; /* Maintain a max width */
+    height: 90vw; /* Maintain aspect ratio */
+    max-height: 500px; /* Maintain a max height */
     border: 1px solid #ccc;
     background-color: #303030;
 }

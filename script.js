@@ -80,47 +80,63 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function makeDraggable(element) {
         element.addEventListener('mousedown', onMouseDown);
-
+        element.addEventListener('touchstart', onTouchStart);
+    
         function onMouseDown(event) {
             event.preventDefault();
-
-            const shiftX = event.clientX - element.getBoundingClientRect().left;
-            const shiftY = event.clientY - element.getBoundingClientRect().top;
-
+            startDrag(event.clientX, event.clientY);
+        }
+    
+        function onTouchStart(event) {
+            event.preventDefault();
+            const touch = event.touches[0];
+            startDrag(touch.clientX, touch.clientY);
+        }
+    
+        function startDrag(clientX, clientY) {
+            const shiftX = clientX - element.getBoundingClientRect().left;
+            const shiftY = clientY - element.getBoundingClientRect().top;
+    
             element.style.position = 'absolute';
             element.style.zIndex = 1000;
             document.body.append(element);
-
-            moveAt(event.pageX, event.pageY);
-
+    
+            moveAt(clientX, clientY);
+    
             function moveAt(pageX, pageY) {
                 element.style.left = pageX - shiftX + 'px';
                 element.style.top = pageY - shiftY + 'px';
             }
-
+    
             function onMouseMove(event) {
                 moveAt(event.pageX, event.pageY);
             }
-
+    
+            function onTouchMove(event) {
+                const touch = event.touches[0];
+                moveAt(touch.pageX, touch.pageY);
+            }
+    
             document.addEventListener('mousemove', onMouseMove);
-
+            document.addEventListener('touchmove', onTouchMove);
+    
             element.onmouseup = function() {
                 document.removeEventListener('mousemove', onMouseMove);
                 element.onmouseup = null;
                 element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
             };
-
-            document.addEventListener('mouseup', function() {
-                document.removeEventListener('mousemove', onMouseMove);
-                element.onmouseup = null;
+    
+            element.ontouchend = function() {
+                document.removeEventListener('touchmove', onTouchMove);
+                element.ontouchend = null;
                 element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
-            });
-
+            };
+    
             element.ondragstart = function() {
                 return false;
             };
         }
-    }
+    }    
 
     document.getElementById('download-btn').addEventListener('click', () => {
         const poetryBoard = document.getElementById('poetry-board');
