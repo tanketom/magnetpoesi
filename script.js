@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     
         function onTouchStart(event) {
             if (activeTouchId === null) {
-                const touch = event.touches[0];
+                const touch = event.touches;
                 activeTouchId = touch.identifier;
                 startDrag(touch.clientX, touch.clientY);
             }
@@ -126,21 +126,24 @@ document.addEventListener('DOMContentLoaded', () => {
             document.addEventListener('mousemove', onMouseMove);
             document.addEventListener('touchmove', onTouchMove);
     
-            element.onmouseup = function() {
-                document.removeEventListener('mousemove', onMouseMove);
-                element.onmouseup = null;
-                element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
-            };
+            document.addEventListener('mouseup', onMouseUp);
+            document.addEventListener('touchend', onTouchEnd);
     
-            element.ontouchend = function(event) {
+            function onMouseUp() {
+                document.removeEventListener('mousemove', onMouseMove);
+                document.removeEventListener('mouseup', onMouseUp);
+                element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
+            }
+    
+            function onTouchEnd(event) {
                 const touch = Array.from(event.changedTouches).find(t => t.identifier === activeTouchId);
                 if (touch) {
                     document.removeEventListener('touchmove', onTouchMove);
-                    element.ontouchend = null;
+                    document.removeEventListener('touchend', onTouchEnd);
                     element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
                     activeTouchId = null;
                 }
-            };
+            }
     
             element.ondragstart = function() {
                 return false;
@@ -153,7 +156,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             activeTouchId = null;
         });
-    }          
+    }            
 
     document.getElementById('download-btn').addEventListener('click', () => {
         const poetryBoard = document.getElementById('poetry-board');
