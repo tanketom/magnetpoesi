@@ -79,84 +79,80 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function makeDraggable(element) {
-        element.addEventListener('mousedown', onMouseDown);
-        element.addEventListener('touchstart', onTouchStart);
-    
+        const board = document.getElementById('poetry-board');
         let activeTouchId = null;
-    
+
+        element.addEventListener('mousedown', onMouseDown);
+        element.addEventListener('touchstart', onTouchStart, { passive: false });
+
         function onMouseDown(event) {
             event.preventDefault();
             startDrag(event.clientX, event.clientY);
         }
-    
+
         function onTouchStart(event) {
-            if (activeTouchId === null) {
-                const touch = event.touches;
-                activeTouchId = touch.identifier;
-                startDrag(touch.clientX, touch.clientY);
-            }
+            if (activeTouchId !== null) return;
+            const touch = event.touches[0];
+            activeTouchId = touch.identifier;
+            event.preventDefault();
+            startDrag(touch.clientX, touch.clientY);
         }
-    
+
         function startDrag(clientX, clientY) {
-            const shiftX = clientX - element.getBoundingClientRect().left;
-            const shiftY = clientY - element.getBoundingClientRect().top;
-    
-            element.style.position = 'absolute';
+            const elementRect = element.getBoundingClientRect();
+            const shiftX = clientX - elementRect.left;
+            const shiftY = clientY - elementRect.top;
+
             element.style.zIndex = 1000;
-            document.body.append(element);
-    
+
             moveAt(clientX, clientY);
-    
-            function moveAt(pageX, pageY) {
-                element.style.left = pageX - shiftX + 'px';
-                element.style.top = pageY - shiftY + 'px';
+
+            function moveAt(cx, cy) {
+                const boardRect = board.getBoundingClientRect();
+                element.style.left = (cx - boardRect.left - shiftX) + 'px';
+                element.style.top = (cy - boardRect.top - shiftY) + 'px';
             }
-    
+
             function onMouseMove(event) {
-                moveAt(event.pageX, event.pageY);
+                moveAt(event.clientX, event.clientY);
             }
-    
+
             function onTouchMove(event) {
                 const touch = Array.from(event.changedTouches).find(t => t.identifier === activeTouchId);
                 if (touch) {
-                    moveAt(touch.pageX, touch.pageY);
+                    event.preventDefault();
+                    moveAt(touch.clientX, touch.clientY);
                 }
             }
-    
-            document.addEventListener('mousemove', onMouseMove);
-            document.addEventListener('touchmove', onTouchMove);
-    
-            document.addEventListener('mouseup', onMouseUp);
-            document.addEventListener('touchend', onTouchEnd);
-    
+
             function onMouseUp() {
                 document.removeEventListener('mousemove', onMouseMove);
                 document.removeEventListener('mouseup', onMouseUp);
+                element.style.zIndex = '';
                 element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
             }
-    
+
             function onTouchEnd(event) {
                 const touch = Array.from(event.changedTouches).find(t => t.identifier === activeTouchId);
                 if (touch) {
                     document.removeEventListener('touchmove', onTouchMove);
                     document.removeEventListener('touchend', onTouchEnd);
+                    document.removeEventListener('touchcancel', onTouchEnd);
+                    element.style.zIndex = '';
                     element.style.transform = `rotate(${Math.random() * 20 - 10}deg)`;
                     activeTouchId = null;
                 }
             }
-    
-            element.ondragstart = function() {
-                return false;
-            };
+
+            document.addEventListener('mousemove', onMouseMove);
+            document.addEventListener('touchmove', onTouchMove, { passive: false });
+            document.addEventListener('mouseup', onMouseUp);
+            document.addEventListener('touchend', onTouchEnd);
+            document.addEventListener('touchcancel', onTouchEnd);
+
+            element.ondragstart = () => false;
         }
-    
-        document.addEventListener('touchstart', function(event) {
-            if (event.target.classList.contains('word')) {
-                return;
-            }
-            activeTouchId = null;
-        });
-    }            
+    }
 
     document.getElementById('download-btn').addEventListener('click', () => {
         const poetryBoard = document.getElementById('poetry-board');
@@ -184,10 +180,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             ctx.fillStyle = 'white';
             ctx.fillRect(0, 0, wordRect.width, wordRect.height);
+            ctx.strokeStyle = 'gray';
+            ctx.lineWidth = 1;
+            ctx.strokeRect(0.5, 0.5, wordRect.width - 1, wordRect.height - 1);
 
             ctx.fillStyle = 'black';
             ctx.font = '16px Arial';
-            ctx.fillText(word.textContent, 5, 20);
+            ctx.textBaseline = 'middle';
+            ctx.fillText(word.textContent, 6, wordRect.height / 2);
             ctx.restore();
         });
 
